@@ -1,0 +1,21 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test --timeout 30000"
+  },
+
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "selenium-webdriver": "^4.46.0"
+  },
+  "devDependencies": {
+    "mocha": "^11.7.6",
+    "mocha-simple-html-reporter": "^2.0.0",
+    "mochawesome": "^8.0.1"
+  }
+}
