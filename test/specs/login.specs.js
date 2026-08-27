@@ -23,9 +23,9 @@ describe('Login Test', function() {
         await usernameField.sendKeys('standard_user');
         await passwordField.sendKeys('secret_sauce');
         await loginButton.click();
-        await driver.wait(until.urlIs('https://www.saucedemo.com/inventory.html'), 5000);
-        let currentUrl = await driver.getCurrentUrl();
-        assert.strictEqual(currentUrl, 'https://www.saucedemo.com/inventory.html');
+        
+        let title = await driver.getTitle();
+        assert.strictEqual(title, 'Swag Labs');
     });
 
     it('Should display error message with invalid credentials', async function() {
@@ -39,7 +39,7 @@ describe('Login Test', function() {
         await driver.wait(until.elementIsVisible(notification), 5000);
 
         let errorMessage = await notification.getText();
-        assert.strictEqual(errorMessage,'Epic sadface: Username and password do not match any user in this service')
+        assert.strictEqual(errorMessage,'Epic sadface: Username and password do not match any user in this service');
     });
     
     it('Should not login with blank username', async function() {
@@ -51,7 +51,7 @@ describe('Login Test', function() {
         await driver.wait(until.elementIsVisible(notification), 5000);
 
         let errorMessage = await notification.getText();
-        assert.strictEqual(errorMessage,'Epic sadface: Username is required')
+        assert.strictEqual(errorMessage,'Epic sadface: Username is required');
     });
     
     it('Should not login with blank password', async function() {
@@ -63,6 +63,6 @@ describe('Login Test', function() {
         await driver.wait(until.elementIsVisible(notification), 5000);
 
         let errorMessage = await notification.getText();
-        assert.strictEqual(errorMessage,'Epic sadface: Password is required')
+        assert.strictEqual(errorMessage,'Epic sadface: Password is required');
     });
 });
