@@ -9,9 +9,9 @@ class loginPage {
     async openBrowser(){
         await this.driver.get(LOGIN_LOCATORS.url);
         await this.driver.wait(async function(){
-            let url = await this.driver.getCurrentUrl();
+            const url = await this.driver.getCurrentUrl();
             return url === LOGIN_LOCATORS.url;
-        })
+        },5000).catch(()=>{});
     }
 
     async inputUsername(username){
@@ -39,25 +39,27 @@ class loginPage {
 
     async assertInvalidCredentials(){
         const notification = await this.driver.wait(until.elementLocated(LOGIN_LOCATORS.selectors.notification, 5000));
-        await this.driver.wait(until.elementIsVisible(notification), 5000);
-        const message = await this.driver.findElement(notification).getText();
-        assert.strictEqual(message,'Epic sadface: Username and password do not match any user in this service');
+        await this.driver.wait(until.elementIsVisible(notification),5000);
+        const messageElement = await this.driver.findElement(LOGIN_LOCATORS.selectors.notification);
+        const messageText = await messageElement.getText();
+        assert.strictEqual(messageText,'Epic sadface: Username and password do not match any user in this service');
     }
 
     async assertBlankUsername(){
         const notification = await this.driver.wait(until.elementLocated(LOGIN_LOCATORS.selectors.notification, 5000));
         await this.driver.wait(until.elementIsVisible(notification),5000);
-        const message = await this.driver.findElement(notification).getText();
-        assert.strictEqual(message,'Epic sadface: Username is required');
+        const messageElement = await this.driver.findElement(LOGIN_LOCATORS.selectors.notification);
+        const messageText = await messageElement.getText();
+        assert.strictEqual(messageText,'Epic sadface: Username is required');
     }
 
     async assertBlankPassword(){
         const notification = await this.driver.wait(until.elementLocated(LOGIN_LOCATORS.selectors.notification, 5000));
-        await this.driver.wait(until.elementIsVisible(notification), 5000);
-        const message = await this.driver.findElement(notification).getText();
-        assert.strictEqual(message,'Epic sadface: Password is required');
+        await this.driver.wait(until.elementIsVisible(notification),5000);
+        const messageElement = await this.driver.findElement(LOGIN_LOCATORS.selectors.notification);
+        const messageText = await messageElement.getText();
+        assert.strictEqual(messageText,'Epic sadface: Password is required');
     }
-
 }
 
 module.exports = loginPage;

@@ -1,15 +1,16 @@
-const { Builder, By, until } = require('selenium-webdriver');
-const assert = require('assert');
-const { elementLocated } = require('selenium-webdriver/lib/until');
+const { Builder } = require('selenium-webdriver');
+const loginPage = require('../pages/login.page');
 
 describe('Login Test', function() {
     let driver;
+    let login;
     
     beforeEach(async function() {
         driver = await new Builder()
         .forBrowser('chrome')
         .build();
-        await driver.get('https://www.saucedemo.com/');
+        login = new loginPage(driver);
+        await login.openBrowser();
     });
     
     afterEach(async function() {
@@ -17,52 +18,28 @@ describe('Login Test', function() {
     });
     
     it('Should login successfully with valid credentials', async function() {
-        let usernameField = await driver.findElement(By.id('user-name'));
-        let passwordField = await driver.findElement(By.id('password'));
-        let loginButton = await driver.findElement(By.id('login-button'));
-        await usernameField.sendKeys('standard_user');
-        await passwordField.sendKeys('secret_sauce');
-        await loginButton.click();
-        
-        let title = await driver.getTitle();
-        assert.strictEqual(title, 'Swag Labs');
+        await login.inputUsername('standard_user');
+        await login.inputPassword('secret_sauce');
+        await login.clickLoginButton();
+        await login.assertLoginSuccess();
     });
 
     it('Should display error message with invalid credentials', async function() {
-        let usernameField = await driver.findElement(By.id('user-name'));
-        let passwordField = await driver.findElement(By.id('password'));
-        let loginButton = await driver.findElement(By.id('login-button'));
-        await usernameField.sendKeys('invalid');
-        await passwordField.sendKeys('secret_sauce');
-        await loginButton.click();
-        let notification = await driver.wait(until.elementLocated(By.xpath('//*[@data-test="error"]')),5000);
-        await driver.wait(until.elementIsVisible(notification), 5000);
-
-        let errorMessage = await notification.getText();
-        assert.strictEqual(errorMessage,'Epic sadface: Username and password do not match any user in this service');
+        await login.inputUsername('invalid');
+        await login.inputPassword('secret_sauce');
+        await login.clickLoginButton();
+        await login.assertInvalidCredentials();
     });
     
     it('Should not login with blank username', async function() {
-        let passwordField = await driver.findElement(By.id('password'));
-        let loginButton = await driver.findElement(By.id('login-button'));
-        await passwordField.sendKeys('secret_sauce');
-        await loginButton.click();
-        let notification = await driver.wait(until.elementLocated(By.xpath('//*[@data-test="error"]')),5000);
-        await driver.wait(until.elementIsVisible(notification), 5000);
-
-        let errorMessage = await notification.getText();
-        assert.strictEqual(errorMessage,'Epic sadface: Username is required');
+        await login.inputPassword('secret_sauce');
+        await login.clickLoginButton();
+        await login.assertBlankUsername();
     });
     
     it('Should not login with blank password', async function() {
-        let usernameField = await driver.findElement(By.id('user-name'));
-        let loginButton = await driver.findElement(By.id('login-button'));
-        await usernameField.sendKeys('standard_user');
-        await loginButton.click();
-        let notification = await driver.wait(until.elementLocated(By.xpath('//*[@data-test="error"]')),5000);
-        await driver.wait(until.elementIsVisible(notification), 5000);
-
-        let errorMessage = await notification.getText();
-        assert.strictEqual(errorMessage,'Epic sadface: Password is required');
+        await login.inputUsername('invalid');
+        await login.clickLoginButton();
+        await login.assertBlankPassword();
     });
 });
