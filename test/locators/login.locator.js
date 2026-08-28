@@ -7,6 +7,7 @@ const LOGIN_LOCATORS = {
         passwordField: By.id('password'),
         loginButton: By.id('login-button'),
         notification: By.xpath('//*[@data-test="error"]'),
+        filter: By.xpath('//*[@class="product_sort_container"]'),
         title: By.className('app_logo')
     }
 };
