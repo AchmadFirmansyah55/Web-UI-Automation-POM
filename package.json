@@ -5,12 +5,13 @@
   "scripts": {
     "test": "mocha test --timeout 30000"
   },
-
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "canvas": "^3.2.3",
+    "pixelmatch": "^7.2.0",
     "selenium-webdriver": "^4.46.0"
   },
   "devDependencies": {
