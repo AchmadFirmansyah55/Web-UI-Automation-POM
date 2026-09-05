@@ -1,5 +1,6 @@
 const { Builder, By, until } = require('selenium-webdriver');
 const assert = require('assert');
+const chrome = require('selenium-webdriver/chrome');
 const loginPage = require('../pages/login.page');
 const addcartPage = require('../pages/addCart.page');
 
@@ -7,15 +8,25 @@ describe('Add cart Test', function(){
     let driver;
     let login;
     let addcart;
-
+    const options = new chrome.Options();
+    options.addArguments(
+        '--disable-features=PasswordLeakDetection',
+        );
+        options.setUserPreferences({
+        'credentials_enable_service': false,
+        'profile.password_manager_enabled': false,
+        'profile.password_manager_leak_detection': false
+    });
+ 
     beforeEach(async function() {
         driver = await new Builder()
         .forBrowser('chrome')
+        .setChromeOptions(options)
         .build();
         await driver.manage().window().maximize();
         login = new loginPage(driver);
         addcart = new addcartPage(driver);
-
+    
         await login.openBrowser();
         await login.inputUsername('standard_user');
         await login.inputPassword('secret_sauce');

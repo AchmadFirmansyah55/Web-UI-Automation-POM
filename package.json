@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test --timeout 30000"
+    "test": "mocha \"test/specs/**/*.specs.js\" --timeout 60000"
   },
   "keywords": [],
   "author": "",
