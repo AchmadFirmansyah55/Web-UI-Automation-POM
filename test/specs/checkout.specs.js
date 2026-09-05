@@ -47,9 +47,7 @@ describe ('Checkout product Test', async function(){
         await checkoutButton.click();
 
         //Make sure Your Information page is displayed
-        await driver.wait(until.elementLocated(By.className('title')),5000);
-
-        let userinformationTitle = await driver.findElement(By.className('title')).getText();
+        let userinformationTitle = await driver.wait(until.elementLocated(By.className('title')),5000).getText();
         assert.strictEqual(userinformationTitle,'Checkout: Your Information');
         let userinformationDisplayed = await driver.wait(until.elementLocated(By.className('title')),5000).isDisplayed();
         assert.strictEqual(await userinformationDisplayed, true);
@@ -64,9 +62,7 @@ describe ('Checkout product Test', async function(){
         await continueButton.click();
 
         //Make sure Checkout overview page is displayed
-        await driver.wait(until.elementLocated(By.xpath('//*[@data-test="title"]')),5000);
-
-        let checkoutOverviewTitle = await driver.findElement(By.xpath('//*[@data-test="title"]')).getText();
+        let checkoutOverviewTitle = await driver.wait(until.elementLocated(By.xpath('//*[@data-test="title"]')),5000).getText();
         assert.strictEqual(checkoutOverviewTitle,'Checkout: Overview');
         let checkoutOverviewDisplayed = await driver.findElement(By.xpath('//*[@data-test="title"]')).isDisplayed();
         assert.strictEqual(await checkoutOverviewDisplayed, true);
@@ -102,8 +98,8 @@ describe ('Checkout product Test', async function(){
         //Make sure click finish button will redirects to complete order page
         let finishButton = await driver.findElement(By.id('finish'));
         await finishButton.click();
-        await driver.wait(until.elementLocated(By.className('complete-header')),5000);
-        let completeOrderTitle = await driver.findElement(By.className('complete-header')).getText();
+
+        let completeOrderTitle = await driver.wait(until.elementLocated(By.className('complete-header')),5000).getText();
         assert.strictEqual(completeOrderTitle, 'Thank you for your order!');
         let completeOrderDisplayed = await driver.findElement(By.className('complete-header')).isDisplayed();
         assert.strictEqual(completeOrderDisplayed, true);
